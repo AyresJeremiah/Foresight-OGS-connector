@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/GC2Connector/GC2Connector.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/GC2Connector.Tests/GC2Connector.Tests.csproj" />
+  </Folder>
+</Solution>
