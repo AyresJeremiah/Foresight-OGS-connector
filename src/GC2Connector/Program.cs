@@ -10,6 +10,7 @@ bool listPorts = false;
 bool useBluetooth = false;
 bool listBt = false;
 string? btName = null;
+bool verbose = false;
 
 for (int i = 0; i < args.Length; i++)
 {
@@ -24,6 +25,7 @@ for (int i = 0; i < args.Length; i++)
         case "--bluetooth" or "--bt": useBluetooth = true; break;
         case "--list-bt": listBt = true; break;
         case "--bt-name" when i + 1 < args.Length: btName = args[++i]; useBluetooth = true; break;
+        case "--verbose" or "-v": verbose = true; break;
     }
 }
 
@@ -74,12 +76,12 @@ try
 {
     if (simulator == "ogs")
     {
-        ogsClient = new OgsClient(host, simPort.Value);
+        ogsClient = new OgsClient(host, simPort.Value) { Verbose = verbose };
         await ogsClient.ConnectAsync(cts.Token);
     }
     else
     {
-        gsProClient = new GsProClient(host, simPort.Value);
+        gsProClient = new GsProClient(host, simPort.Value) { Verbose = verbose };
         await gsProClient.ConnectAsync(cts.Token);
     }
 }
@@ -108,6 +110,8 @@ aggregator.ShotReady += async shot =>
 
 Action<string> onLine = line =>
 {
+    if (verbose)
+        Console.WriteLine($"  [RAW] {line}");
     var shot = Gc2LineParser.Parse(line);
     if (shot != null)
         aggregator.Feed(shot);

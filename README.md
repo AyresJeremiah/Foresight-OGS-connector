@@ -39,6 +39,9 @@ Simulator:
 Serial options:
   --baud <rate>         Baud rate (default: 115200)
 
+Debugging:
+  --verbose, -v         Log raw GC2 lines and full JSON payloads sent to simulator
+
 Discovery:
   --list-ports          List available serial ports
   --list-bt             List paired Bluetooth devices
@@ -58,6 +61,9 @@ gc2connector --port COM3 --simulator ogs
 
 # GSPro on a different machine
 gc2connector --bluetooth --host 192.168.1.100 --sim-port 921
+
+# Verbose mode — see raw GC2 data and full JSON payloads
+gc2connector --bluetooth --simulator ogs -v
 ```
 
 ## Setup

@@ -13,6 +13,7 @@ public sealed class OgsClient : IDisposable
     private NetworkStream? _stream;
 
     public bool IsConnected => _client?.Connected == true;
+    public bool Verbose { get; set; }
 
     public OgsClient(string host, int port)
     {
@@ -45,7 +46,9 @@ public sealed class OgsClient : IDisposable
     private async Task SendJsonLine<T>(T obj)
     {
         if (_stream == null) return;
-        var json = JsonSerializer.Serialize(obj) + "\n";
+        var json = JsonSerializer.Serialize(obj, new JsonSerializerOptions { WriteIndented = false }) + "\n";
+        if (Verbose)
+            Console.WriteLine($"  [OGS TX] {json.TrimEnd()}");
         var bytes = Encoding.UTF8.GetBytes(json);
         await _stream.WriteAsync(bytes);
         await _stream.FlushAsync();

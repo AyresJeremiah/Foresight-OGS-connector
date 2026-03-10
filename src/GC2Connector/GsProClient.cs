@@ -14,6 +14,7 @@ public sealed class GsProClient : IDisposable
     private int _shotNumber;
 
     public bool IsConnected => _client?.Connected == true;
+    public bool Verbose { get; set; }
 
     public GsProClient(string host, int port)
     {
@@ -47,6 +48,8 @@ public sealed class GsProClient : IDisposable
     {
         if (_stream == null) return;
         var json = JsonSerializer.Serialize(obj);
+        if (Verbose)
+            Console.WriteLine($"  [GSPro TX] {json}");
         var bytes = Encoding.UTF8.GetBytes(json);
         await _stream.WriteAsync(bytes);
         await _stream.FlushAsync();
